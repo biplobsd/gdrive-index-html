@@ -9,6 +9,7 @@ appVer = "1.0"
 genDate = datetime.datetime.now().strftime("%d/%m/%Y")
 genTime = datetime.datetime.now().strftime("%H:%M")
 appLink = "https://www.prologuepro.com"
+template = ''
 dirData = ""
 numFiles=0 
 numDirs=0 
@@ -16,13 +17,16 @@ grandTotalSize=0
 linkFiles="false" # file linking not yet implemented
 
 # functions definition
-def generateDirArray(dirToScan):
+def generateDirArray(dirToScan, template=''):
     global dirData
     global numFiles
     global numDirs
     global grandTotalSize
     global template_path
-    template_path = raw_input("Copy and paste the path of template.html(available in gIndex folder):    ")
+    if not template:
+      template_path = raw_input("Copy and paste the path of template.html(available in gIndex folder):    ")
+    else:
+      template_path = template
     print "Processing...."
     # assing a number identifier to each directory
     i = 1
@@ -125,8 +129,10 @@ if len(sys.argv) < 3:	# check if required arguments are supplied
 else:
 	pathToIndex = str(sys.argv[1])
 	title = str(sys.argv[2])
+	if len(sys.argv)>3:
+		template = str(sys.argv[3])
 	if os.path.exists(pathToIndex):	# check if the specified directory exists
-		generateDirArray(pathToIndex)
+		generateDirArray(pathToIndex, template)
 		generateHTML(dirData,appName,appVer,genDate,genTime,title,appLink,numFiles,numDirs,grandTotalSize,linkFiles)
 	else:
 		print "The specified directory doesn't exist"
